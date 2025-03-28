@@ -98,7 +98,7 @@ input_data['WeekOfYear'] = input_data['Date'].dt.isocalendar().week
 input_data['DayOfWeek'] = input_data['Date'].dt.dayofweek  # 0 = Monday, 6 = Sunday
 
 # Select features for the model (XGBoost input)
-feature_columns =  ['DayOfWeek', 'Promo', 'Year', 'Month', 'WeekOfYear', 'RandomPromo', 'BadPromo', 'GreatestPromo', 'StoreType_c', 'Assortment_a'] 
+feature_columns =  ['DayOfWeek', 'Promo', 'Year', 'Month', 'WeekOfYear', 'RandomPromo', 'GreatestPromo', 'StoreType_c', 'Assortment_a'] 
 input_features = input_data[feature_columns]
 
 # Convert the input data to the DMatrix format

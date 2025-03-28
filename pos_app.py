@@ -65,7 +65,7 @@ with st.expander("Click to view the model's performance on historical data."):
 
 # Collect user inputs for promotions
 st.sidebar.header('User Inputs')
-st.sidebar.write("Imagine you're a head of marketing division and you want to decide, which promotions will run in the store the following 4 weeks. In this app, you can try different promotion combinations. The model will predict the daily sales for you.")
+st.sidebar.write("Imagine you're a head of marketing division and you want to decide, which promotions will run in the store the following 4 weeks. In this app, you can try different promotion combinations. The AI model will predict the daily sales for you.")
 
 promo_a = st.sidebar.number_input('Promotion A from the real data (0 or 1)', min_value=0, max_value=1, step=1)
 promo_b = st.sidebar.number_input('Promotion B simulated with low impact on sales (0 or 1)', min_value=0, max_value=1, step=1)

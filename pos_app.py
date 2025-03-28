@@ -13,7 +13,7 @@ st.title('POS Sales Forecasting case study')
 
 st.write("I wanted to explore the potential of POS data (focusing on possible AI business applications rather than creating the perfect AI model.) The goal was specifically to predict daily sales based on various promotions. For this, I used real-world sales data from Rossmann stores, available on Kaggle, where each row represents the total sales for a given day and includes a column indicating whether a promotion was applied. I artificially added two other promotional scenarios to expand the dataset. Then I trained the model to predict future sales based on date-related features and the types of promotions applied. For simplicity and  faster training time, I created the model for just one store.")
 
-with st.expander("Click to see model performance on historical data"):
+with st.expander("Click to view the model's performance on historical data."):
   st.write("In the interactive figure below, you can see both the predicted and observed sales on historical data.")
   # Load the data from the CSV file
   pdf = pd.read_csv('results/predictions.csv')

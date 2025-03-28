@@ -13,60 +13,61 @@ st.title('POS Sales Forecasting case study')
 
 st.write("I wanted to explore the potential of POS data (focusing on possible AI business applications rather than creating the perfect AI model.) The goal was specifically to predict daily sales based on various promotions. For this, I used real-world sales data from Rossmann stores, available on Kaggle, where each row represents the total sales for a given day and includes a column indicating whether a promotion was applied. I artificially added two other promotional scenarios to expand the dataset. Then I trained the model to predict future sales based on date-related features and the types of promotions applied. For simplicity and  faster training time, I created the model for just one store.")
 
-st.write("In the interactive figure below, you can see both the predicted and observed sales on historical data.")
-# Load the data from the CSV file
-pdf = pd.read_csv('results/predictions.csv')
-
-# Create the mask for promos
-# promo_mask = pdf['Promo'] == 1
-# random_promo_mask = pdf['RandomPromo'] == 1
-# bad_promo_mask = pdf['BadPromo'] == 1
-# greatest_promo_mask = pdf['GreatestPromo'] == 1
-
-# Create a Plotly figure
-fig = go.Figure()
-
-# Add actual POS sales line (black color)
-fig.add_trace(go.Scatter(x=pdf['Date'], y=pdf['Sales'], mode='lines+markers', 
-                         name='Actual Sales', line=dict(color='gray', width=2)))
-
-# # Add real world promo points (green color)
-# fig.add_trace(go.Scatter(x=pdf['Date'][promo_mask], y=pdf['Sales'][promo_mask], 
-#                          mode='markers', name='Real world Promo A', 
-#                          marker=dict(color='green', size=8)))
-
-# # Add simulated non-impact promo points (yellow color)
-# fig.add_trace(go.Scatter(x=pdf['Date'][random_promo_mask], y=pdf['Sales'][random_promo_mask], 
-#                          mode='markers', name='Simulated Promo B (Non-impact)', 
-#                          marker=dict(color='yellow', size=8)))
-
-# # Add simulated greatest-impact promo points (red color)
-# fig.add_trace(go.Scatter(x=pdf['Date'][greatest_promo_mask], y=pdf['Sales'][greatest_promo_mask], 
-#                          mode='markers', name='Simulated Promo C (Great-impact)', 
-#                          marker=dict(color='red', size=8)))
-
-# # Add simulated anti-impact promo points (blue color)
-# fig.add_trace(go.Scatter(x=pdf['Date'][bad_promo_mask], y=pdf['Sales'][bad_promo_mask], 
-#                          mode='markers', name='Simulated Promo D (Anti-impact :))', 
-#                          marker=dict(color='blue', size=8)))
-
-# Add predicted POS sales line (salmon color)
-fig.add_trace(go.Scatter(x=pdf['Date'], y=pdf['pred_Sales'], mode='lines', 
-                         name='Predicted Sales', line=dict(dash='dash', color='salmon', width=2)))
-
-# Update layout with titles and axis labels
-fig.update_layout(
-    title='Historical predicted daily Sales vs Actual',
-    xaxis_title='Date',
-    yaxis_title='Sales',
-    # legend_title='Promo Type',
-    template='plotly_dark',  
-    autosize=True,
-    xaxis_rangeslider_visible=True
-)
-
-# Show the plot in Streamlit
-st.plotly_chart(fig)
+with st.expander("Click to see model performance on historical data"):
+  st.write("In the interactive figure below, you can see both the predicted and observed sales on historical data.")
+  # Load the data from the CSV file
+  pdf = pd.read_csv('results/predictions.csv')
+  
+  # Create the mask for promos
+  # promo_mask = pdf['Promo'] == 1
+  # random_promo_mask = pdf['RandomPromo'] == 1
+  # bad_promo_mask = pdf['BadPromo'] == 1
+  # greatest_promo_mask = pdf['GreatestPromo'] == 1
+  
+  # Create a Plotly figure
+  fig = go.Figure()
+  
+  # Add actual POS sales line (black color)
+  fig.add_trace(go.Scatter(x=pdf['Date'], y=pdf['Sales'], mode='lines+markers', 
+                           name='Actual Sales', line=dict(color='gray', width=2)))
+  
+  # # Add real world promo points (green color)
+  # fig.add_trace(go.Scatter(x=pdf['Date'][promo_mask], y=pdf['Sales'][promo_mask], 
+  #                          mode='markers', name='Real world Promo A', 
+  #                          marker=dict(color='green', size=8)))
+  
+  # # Add simulated non-impact promo points (yellow color)
+  # fig.add_trace(go.Scatter(x=pdf['Date'][random_promo_mask], y=pdf['Sales'][random_promo_mask], 
+  #                          mode='markers', name='Simulated Promo B (Non-impact)', 
+  #                          marker=dict(color='yellow', size=8)))
+  
+  # # Add simulated greatest-impact promo points (red color)
+  # fig.add_trace(go.Scatter(x=pdf['Date'][greatest_promo_mask], y=pdf['Sales'][greatest_promo_mask], 
+  #                          mode='markers', name='Simulated Promo C (Great-impact)', 
+  #                          marker=dict(color='red', size=8)))
+  
+  # # Add simulated anti-impact promo points (blue color)
+  # fig.add_trace(go.Scatter(x=pdf['Date'][bad_promo_mask], y=pdf['Sales'][bad_promo_mask], 
+  #                          mode='markers', name='Simulated Promo D (Anti-impact :))', 
+  #                          marker=dict(color='blue', size=8)))
+  
+  # Add predicted POS sales line (salmon color)
+  fig.add_trace(go.Scatter(x=pdf['Date'], y=pdf['pred_Sales'], mode='lines', 
+                           name='Predicted Sales', line=dict(dash='dash', color='salmon', width=2)))
+  
+  # Update layout with titles and axis labels
+  fig.update_layout(
+      title='Historical predicted daily Sales vs Actual',
+      xaxis_title='Date',
+      yaxis_title='Sales',
+      # legend_title='Promo Type',
+      template='plotly_dark',  
+      autosize=True,
+      xaxis_rangeslider_visible=True
+  )
+  
+  # Show the plot in Streamlit
+  st.plotly_chart(fig)
 
 # Collect user inputs for promotions
 st.sidebar.header('User Inputs')

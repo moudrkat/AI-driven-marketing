@@ -21,7 +21,6 @@ with st.expander("Click to see model performance on historical data"):
   # Create the mask for promos
   # promo_mask = pdf['Promo'] == 1
   # random_promo_mask = pdf['RandomPromo'] == 1
-  # bad_promo_mask = pdf['BadPromo'] == 1
   # greatest_promo_mask = pdf['GreatestPromo'] == 1
   
   # Create a Plotly figure
@@ -46,11 +45,6 @@ with st.expander("Click to see model performance on historical data"):
   #                          mode='markers', name='Simulated Promo C (Great-impact)', 
   #                          marker=dict(color='red', size=8)))
   
-  # # Add simulated anti-impact promo points (blue color)
-  # fig.add_trace(go.Scatter(x=pdf['Date'][bad_promo_mask], y=pdf['Sales'][bad_promo_mask], 
-  #                          mode='markers', name='Simulated Promo D (Anti-impact :))', 
-  #                          marker=dict(color='blue', size=8)))
-  
   # Add predicted POS sales line (salmon color)
   fig.add_trace(go.Scatter(x=pdf['Date'], y=pdf['pred_Sales'], mode='lines', 
                            name='Predicted Sales', line=dict(dash='dash', color='salmon', width=2)))
@@ -71,21 +65,15 @@ with st.expander("Click to see model performance on historical data"):
 
 # Collect user inputs for promotions
 st.sidebar.header('User Inputs')
-
-
 st.sidebar.write("Imagine you're a head of marketing division and you want to decide, which promotions will run in the store the following 4 weeks. In this app, you can try different promotion combinations. The model will predict the daily sales for you.")
-
 
 promo_a = st.sidebar.number_input('Promotion A from the real data (0 or 1)', min_value=0, max_value=1, step=1)
 promo_b = st.sidebar.number_input('Promotion B simulated with low impact on sales (0 or 1)', min_value=0, max_value=1, step=1)
 promo_c = st.sidebar.number_input('Promotion C simulated with great impact on sales (0 or 1)', min_value=0, max_value=1, step=1)
-# promo_d = st.sidebar.number_input('Promotion D (0 or 1)', min_value=0, max_value=1, step=1)
 
 # Input for the start date
 start_date = st.sidebar.date_input('Start Date', datetime.today())
 
-# Button to run the prediction
-# if st.sidebar.button('Predict Daily Sales for the next 4 weeks'):
 # Generate the next 4 weeks of dates from the start date
 start_date = pd.to_datetime(start_date)
 date_range = [start_date + timedelta(days=i) for i in range(0, 28)]  # 28 days = 4 weeks
@@ -95,7 +83,6 @@ input_data = pd.DataFrame({
     'Promo': [promo_a] * 28,
     'RandomPromo': [promo_b] * 28,
     'GreatestPromo': [promo_c] * 28,
-    'BadPromo': [0] * 28,
     'Date': [date.strftime('%Y-%m-%d') for date in date_range],  # Format the dates as strings
     'StoreType_c': [1] * 28,
     'Assortment_a': [1] * 28
@@ -110,17 +97,11 @@ input_data['Month'] = input_data['Date'].dt.month
 input_data['WeekOfYear'] = input_data['Date'].dt.isocalendar().week
 input_data['DayOfWeek'] = input_data['Date'].dt.dayofweek  # 0 = Monday, 6 = Sunday
 
-# Display the input data
-# st.write("User Input Data for the next 4 weeks:")
-# st.write(input_data)
-
-# StoreType_c, Promo, Assortment_a, GreatestPromo, RandomPromo, DayOfWeek, BadPromo
-
 # Select features for the model (XGBoost input)
 feature_columns =  ['DayOfWeek', 'Promo', 'Year', 'Month', 'WeekOfYear', 'RandomPromo', 'BadPromo', 'GreatestPromo', 'StoreType_c', 'Assortment_a'] 
 input_features = input_data[feature_columns]
 
-# Convert the input data to the appropriate DMatrix format for XGBoost
+# Convert the input data to the DMatrix format
 input_dmatrix = xgb.DMatrix(input_features)
 
 # Get the prediction from the model
@@ -128,11 +109,6 @@ predictions = loaded_model.predict(input_dmatrix)
 
 # Set predictions to 0 for rows where DayOfWeek = 6 (Sunday)
 predictions[input_data['DayOfWeek'] == 6] = 0
-
-# Display the predictions for each day
-# st.write("Predicted Daily Sales for the next 4 weeks:")
-# for i, pred in enumerate(predictions):
-#     st.write(f'Predicted Sales for {date_range[i].strftime("%Y-%m-%d")}: {pred:.2f}')
 
 st.write("In the interactive figure below, you can see the predicted Sales for 4 weeks from selected date with selected Promotions applied.")
 
@@ -149,14 +125,13 @@ if promo_c == 1:
 promo_applied_str = ", ".join(promo_applied) if promo_applied else "No Promotions"
 title_text = f'Predicted future Daily Sales from {start_date}<br>Promotions applied: {promo_applied_str}'
 
-# Create a Plotly figure
+# Create a plotly figure
 fig2 = go.Figure()
 
-    # Add the predicted sales to the plot (this updates the existing plot)
+# Plot the predicted sales
 fig2.add_trace(go.Scatter(x=date_range, y=predictions, mode='lines', 
                             name='Predicted Sales', line=dict(dash='dash', color='salmon', width=2)))
 
-    # Update the layout and re-display the plot with the new predicted sales
 fig2.update_layout(
     title=title_text,
     xaxis_title='Date',
@@ -168,9 +143,7 @@ fig2.update_layout(
     yaxis=dict(range=[0, 10000])  
 )
 
-# Show the updated plot in Streamlit
 st.plotly_chart(fig2)
-
 
 st.markdown("""
 **Insights:**

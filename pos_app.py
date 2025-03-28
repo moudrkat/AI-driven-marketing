@@ -110,7 +110,7 @@ predictions = loaded_model.predict(input_dmatrix)
 # Set predictions to 0 for rows where DayOfWeek = 6 (Sunday)
 predictions[input_data['DayOfWeek'] == 6] = 0
 
-st.write("In the interactive figure below, you can see the predicted Sales for 4 weeks from selected date with selected Promotions applied.")
+st.write("In the interactive figure below, you can view the predicted sales for 4 weeks based on the selected date and applied promotions.")
 
 # Build a string that shows which promotions are applied
 promo_applied = []

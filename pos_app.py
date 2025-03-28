@@ -156,7 +156,7 @@ st.markdown("""
 
 **Challenges:**
 
-1. The performance of the presented model is largely driven by the simulated promotional features. The true complexity lies in understanding and leveraging the real-world data at hand.
+1. The performance of the presented model is largely driven by the two simulated promotional features. The true complexity lies in understanding and leveraging data with a variety of real-world promotional scenarios.
 
-2. While model development is crucial, deploynment introduces additional challenges.
+2. While model development is crucial, deploying to production introduces additional challenges.
 """)
